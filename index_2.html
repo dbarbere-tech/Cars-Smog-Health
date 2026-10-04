@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cars, Smog & Health</title>
+<meta name="description" content="An investigation into how car pollution creates smog, who it harms, and which policies have been shown to reduce it.">
+<style>
+  :root{
+    --bg:#fbfaf7; --surface:#ffffff; --ink:#1d1f22; --muted:#5f6670; --line:#e3e1dc;
+    --accent:#c2410c; --accent-soft:#fde7dc; --good:#0f766e; --good-soft:#d6f0ec; --grey:#9aa1a9;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#141619; --surface:#1c1f23; --ink:#eceae6; --muted:#a3a9b1; --line:#2e3238;
+      --accent:#fb8a54; --accent-soft:#3a2418; --good:#4fd1bf; --good-soft:#163430; --grey:#6b737c; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  main{max-width:860px;margin:0 auto;padding:40px 16px 80px}
+  h1{font-size:2.1rem;line-height:1.15;margin:0 0 8px}
+  h2{font-size:1.35rem;margin:56px 0 4px}
+  h3{font-size:1rem;margin:0 0 6px}
+  p{margin:8px 0}
+  .lede{color:var(--muted);font-size:1.08rem;max-width:62ch}
+  .tag{display:inline-block;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:10px}
+  .kicker{color:var(--muted);font-size:.92rem;margin-bottom:16px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;margin:16px 0}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:24px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .stat b{display:block;font-size:1.9rem;line-height:1.1;color:var(--accent)}
+  .stat span{font-size:.88rem;color:var(--muted)}
+  .chart-title{font-weight:700;margin-bottom:2px}
+  .chart-sub{font-size:.85rem;color:var(--muted);margin-bottom:12px}
+  .src{font-size:.8rem;color:var(--muted);margin-top:10px}
+  svg{display:block;width:100%;height:auto}
+  svg text{fill:var(--ink);font-family:inherit}
+  svg .axis{fill:var(--muted);font-size:11px}
+  svg .grid{stroke:var(--line)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;color:var(--muted);margin-bottom:8px}
+  .sw{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+  table{width:100%;border-collapse:collapse;font-size:.92rem}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .scroll{overflow-x:auto}
+  .method li{margin:6px 0}
+  code{background:var(--accent-soft);padding:1px 5px;border-radius:4px;font-size:.88em}
+  .note{border-left:3px solid var(--accent);padding:4px 0 4px 14px;color:var(--muted);font-size:.92rem}
+  ol.sources{font-size:.85rem;color:var(--muted);padding-left:20px}
+  ol.sources a{color:inherit}
+  a{color:var(--accent)}
+  footer{margin-top:56px;font-size:.82rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+
+<div class="tag">Investigation</div>
+<h1>Cars, Smog &amp; Health</h1>
+<p class="lede">How car exhaust creates smog, how many people it harms in the US, who it harms most, and which policies have measurably reduced it.</p>
+
+<div class="stats">
+  <div class="stat"><b>~22,000</b><span>US premature deaths from transportation air pollution, 2015 [3]</span></div>
+  <div class="stat"><b>36%</b><span>of US human-caused NO<sub>x</sub> (a key smog ingredient) comes from on-road vehicles, 2017 [2]</span></div>
+  <div class="stat"><b>152 M</b><span>Americans (44%) live where ozone or particle pollution gets a failing grade [5]</span></div>
+  <div class="stat"><b>−47%</b><span>drop in young children's asthma visits after Stockholm's congestion charge [10]</span></div>
+</div>
+
+<!-- ============ 1 ============ -->
+<h2>1. How cars make smog</h2>
+<p class="kicker">Exhaust gases (NO<sub>x</sub> and VOCs) react in sunlight to form ground-level ozone. Exhaust, brakes and tires also release fine particles (PM2.5).</p>
+<div class="card">
+  <div class="chart-title">Share of US emissions coming from on-road vehicles</div>
+  <div class="chart-sub">Percent of national total · scale 0–100%</div>
+  <div id="c1"></div>
+  <p class="src">Bars 1–3: Ma et al. 2024, using EPA's 2017 National Emissions Inventory, human-caused sources only [2]. Bars 4–5: EPA 2020 National Emissions Inventory [1]. 2020 was a pandemic year with less driving.</p>
+</div>
+
+<!-- ============ 2 ============ -->
+<h2>2. The health toll</h2>
+<p class="kicker">Ozone inflames the airways and triggers asthma attacks. PM2.5 enters the bloodstream and raises the risk of heart attack and stroke. Diesel exhaust is a known human carcinogen (IARC Group 1).</p>
+<div class="card">
+  <div class="chart-title">Who caused the ~22,000 US transportation-pollution deaths (2015)</div>
+  <div class="chart-sub">Share of deaths by vehicle type · scale 0–100%</div>
+  <div id="c2"></div>
+  <p class="src">ICCT 2019 [3]. 95% confidence range for total deaths: 15,700–28,600. Transportation caused 19% of all US air-pollution deaths, down from 25% in 2010. An older MIT estimate using 2005 data found 53,000 deaths from road transport [4].</p>
+</div>
+
+<!-- ============ 3 ============ -->
+<h2>3. Who breathes the most car pollution</h2>
+<p class="kicker">Vehicle pollution exposure varies more by race than by income. Researchers link this to decades of highway routing, redlining and housing decisions [8].</p>
+<div class="card">
+  <div class="chart-title">Extra exposure to vehicle PM2.5 compared with white residents</div>
+  <div class="chart-sub">Percent more than white residents in the same region · scale 0–100%</div>
+  <div class="legend"><span><i class="sw" style="background:var(--accent)"></i>Northeast &amp; Mid-Atlantic (12 states + DC)</span><span><i class="sw" style="background:var(--grey)"></i>California</span></div>
+  <div id="c3"></div>
+  <p class="src">Union of Concerned Scientists, 2019 [6][7]. The California study did not report a figure for Asian residents.</p>
+</div>
+<div class="card">
+  <h3>Other high-risk groups</h3>
+  <p><b>45 million+</b> Americans live within 300 ft of a major road or other transportation facility [9]. <b>Children</b> (46% live where at least one air grade fails [5]), <b>older adults</b>, <b>people with asthma or heart disease</b>, and <b>low-income households</b> face the highest risk. In California, people without a car breathe <b>19% more</b> vehicle PM2.5 than the state average [6].</p>
+</div>
+
+<!-- ============ 4 ============ -->
+<h2>4. Extreme cases today</h2>
+<div class="card scroll">
+<table>
+  <thead><tr><th>City</th><th>How bad</th><th>Car's role</th><th>Health impact</th></tr></thead>
+  <tbody>
+    <tr><td><b>Lahore, Pakistan</b></td><td>AQI 1,067 citywide, &gt;1,900 in some areas (Nov 2024)*</td><td>~83% of city emissions from transport [12]</td><td>Schools, offices and parks closed; hospitals saw surges in respiratory cases [13]</td></tr>
+    <tr><td><b>Delhi, India</b></td><td>AQI 300–400 for weeks (Nov 2025), &gt;20× WHO guideline</td><td>51–53% of <i>local</i> PM2.5 at peak smog [14]</td><td>~1 in 7 deaths linked to air pollution (2023); ~12 years of life expectancy lost [15]</td></tr>
+    <tr><td><b>Mexico City</b></td><td>Ozone 161 ppb; 6th emergency of 2026 (Sept 13)</td><td>Car exhaust is a main ozone precursor</td><td>Outdoor events suspended; vulnerable groups told to stay inside [16]</td></tr>
+    <tr><td><b>Los Angeles, USA</b></td><td>~159 unhealthy ozone days per year</td><td>Traffic, port trucks, sun, trapped basin</td><td>#1 US ozone city in 26 of the past 27 years [17]</td></tr>
+  </tbody>
+</table>
+<p class="src">* Readings above 500 come from monitoring networks that report beyond the official US AQI cap of 500. Treat them as reported readings.</p>
+</div>
+
+<!-- ============ 5 ============ -->
+<h2>5. What actually works</h2>
+<p class="kicker">Measured change after each policy. Teal = a health outcome; orange = an air-quality outcome.</p>
+<div class="card">
+  <div class="chart-title">Measured reduction after policy</div>
+  <div class="chart-sub">Percent decrease · scale 0–60%</div>
+  <div class="legend"><span><i class="sw" style="background:var(--good)"></i>Health outcome</span><span><i class="sw" style="background:var(--accent)"></i>Air-quality outcome</span></div>
+  <div id="c4"></div>
+  <p class="src">Stockholm [10]; Atlanta 1996 Olympics: Friedman et al. 2001, JAMA †; London ULEZ, compared with a no-ULEZ scenario [11]; US E-ZPass, within 2 km of toll plazas: Currie &amp; Walker 2011, AEJ: Applied †; Mexico City: Davis 2008 [18].</p>
+</div>
+<div class="card">
+  <h3>The biggest one: national vehicle standards</h3>
+  <p>The 1990 Clean Air Act Amendments prevented an estimated <b>230,000 premature deaths</b>, <b>2.4 million asthma attacks</b> and <b>120,000 ER visits</b> in 2020 alone. Benefits were about <b>$2 trillion</b> against $65 billion in costs, roughly 30 to 1 [19]. Combined US emissions of the six main pollutants fell <b>78%</b> from 1970 to 2023 [20].</p>
+  <p class="note"><b>What backfired:</b> Mexico City's license-plate driving bans. People bought second, older and dirtier cars, about 325,000 extra vehicles, and air quality did not improve [18].</p>
+</div>
+
+<!-- ============ METHOD ============ -->
+<h2>How this was made</h2>
+<div class="card method">
+  <p>This exhibit was built with an AI assistant (Claude). It was asked, in order:</p>
+  <ol>
+    <li>What are the health effects of cars when it comes to smog?</li>
+    <li>How do electric and gas cars compare on this?</li>
+    <li>Find exact numbers on US tailpipe pollution and smog.</li>
+    <li>Which demographics are most affected by car smog?</li>
+    <li>Find extreme, current real-world examples of city smog.</li>
+    <li>Which policies have been proven to reduce car smog and its health effects?</li>
+  </ol>
+  <p><b>What the AI computed:</b> no new modeling. It searched the web, pulled published figures from government agencies, NGOs and peer-reviewed studies, and organized them here. Every number is copied from the cited source. The only arithmetic is rounding (for example, 152.3 M → 152 M). The charts plot those figures directly. The data is in the <code>DATA</code> object in this page's source.</p>
+  <p><b>Limits:</b> the figures come from different years (2005–2026), places and methods, so compare them carefully. Figures marked † are cited from the published papers but were not re-checked against the original text during this session.</p>
+  <p><b>To recreate or extend:</b> open any source below and check the figure. To add a city or policy, add a row to <code>DATA</code> and the chart redraws. Good next steps: map US near-road populations, or add Beijing's 2013–2017 clean-air plan.</p>
+</div>
+
+<h2>Sources</h2>
+<ol class="sources">
+  <li><a href="https://www.epa.gov/system/files/documents/2023-06/NO2_2022.pdf">EPA – Overview of NO₂ Air Quality in the US (2020 NEI)</a></li>
+  <li><a href="https://repository.library.noaa.gov/view/noaa/67871/noaa_67871_DS1.pdf">Ma et al. 2024 – Impacts of On-Road Vehicular Emissions on U.S. Air Quality, JGR: Atmospheres</a></li>
+  <li><a href="https://theicct.org/?p=1733">ICCT 2019 – Global Snapshot of Transportation Health Impacts</a></li>
+  <li><a href="https://news.mit.edu/2013/study-air-pollution-causes-200000-early-deaths-each-year-in-the-us-0829">MIT News 2013 – Air pollution causes 200,000 early deaths each year in the US</a></li>
+  <li><a href="https://lung.org/research/sota/key-findings">American Lung Association – State of the Air 2026, Key Findings</a></li>
+  <li><a href="https://www.ucs.org/about/news/scientists-quantify-extent-pollution-disparity-throughout-california">UCS 2019 – Vehicle pollution disparity in California</a></li>
+  <li><a href="https://psmag.com/environment/vehicle-pollution-disproportionately-affects-people-of-color-in-the-northeast-and-mid-atlantic/">Pacific Standard – UCS Northeast &amp; Mid-Atlantic study (2019)</a></li>
+  <li><a href="https://cee.illinois.edu/news/people-color-hardest-hit-air-pollution-from-nearly-all-sources">Tessum et al. 2021, Science Advances (U. Illinois summary)</a></li>
+  <li><a href="https://19january2021snapshot.epa.gov/air-research/research-near-roadway-and-other-near-source-air-pollution_.html">EPA – Near-roadway air pollution research</a></li>
+  <li><a href="https://hub.jhu.edu/2017/03/02/health-effects-for-children-sweden-traffic-tax/">Johns Hopkins – Stockholm congestion tax and children's health (Simeonova et al.)</a></li>
+  <li><a href="https://content.tfl.gov.uk/london-wide-ulez-one-year-report.pdf">Transport for London – London-wide ULEZ One Year Report (2025)</a></li>
+  <li><a href="https://www.eco-business.com/news/analysis-can-punjabs-new-smog-plan-do-the-job/">Eco-Business – Punjab smog plan (Urban Unit 2023 inventory)</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Air_pollution_in_Lahore">Wikipedia – Air pollution in Lahore</a></li>
+  <li><a href="https://www.downtoearth.org.in/amp/story/air/from-episodic-smog-to-structural-pollution-why-vehicles-remain-delhis-biggest-challenge">Down To Earth – Why vehicles remain Delhi's biggest challenge (Dec 2025)</a></li>
+  <li><a href="https://www.abc.net.au/asia/delhi-air-pollution-health-affects-and-possible-solutions/106054892">ABC – Delhi air pollution health effects (Dec 2025)</a></li>
+  <li><a href="https://sonorapresente.com/en/2026/09/ozone-environmental-contingency-remains-in-effect-in-the-valley-of-mexico/">SonoraPresente – Mexico City ozone contingency (Sept 2026)</a></li>
+  <li><a href="https://www.lung.org/media/press-releases/fy26-sota-california">American Lung Association – State of the Air 2026, California</a></li>
+  <li><a href="https://faculty.haas.berkeley.edu/ldavis/Davis%20JPE%202008.pdf">Davis 2008 – Effect of Driving Restrictions on Air Quality in Mexico City, JPE</a></li>
+  <li><a href="https://www.epa.gov/sites/production/files/2015-07/documents/factsheet.pdf">EPA – Clean Air Act 1990–2020 Second Prospective Study</a></li>
+  <li><a href="https://www.mitchellwilliamslaw.com/our-nations-air/trends-through-2023-us-environmental-protection-agency-annual-report">Summary of EPA "Our Nation's Air: Trends Through 2023"</a></li>
+</ol>
+
+<footer>Investigation by Diego Barberena · Compiled October 2026 with AI assistance · Figures as published by the cited sources.</footer>
+</main>
+
+<script>
+const DATA = {
+  vehicleShare: [
+    {label:"NOx (2017)", value:36},
+    {label:"CO (2017)", value:31},
+    {label:"VOCs (2017)", value:11},
+    {label:"NOx, on-road (2020)", value:26},
+    {label:"NOx, all mobile (2020)", value:45}
+  ],
+  deathsBySource: [
+    {label:"On-road diesel", value:43},
+    {label:"On-road gasoline / other", value:28},
+    {label:"Non-road (equipment, rail, etc.)", value:24},
+    {label:"International shipping", value:6}
+  ],
+  disparity: [
+    {label:"Latino", value:75, group:"ne"},
+    {label:"Asian", value:73, group:"ne"},
+    {label:"Black", value:61, group:"ne"},
+    {label:"Black", value:43, group:"ca"},
+    {label:"Latino", value:39, group:"ca"}
+  ],
+  policies: [
+    {label:"London ULEZ – central NO₂", value:54, kind:"air"},
+    {label:"Stockholm – kids' asthma visits", value:47, kind:"health"},
+    {label:"Atlanta '96 – kids' asthma care †", value:42, kind:"health"},
+    {label:"London ULEZ – London-wide NO₂", value:27, kind:"air"},
+    {label:"E-ZPass – low birth weight †", value:11.8, kind:"health"},
+    {label:"E-ZPass – premature births †", value:10.8, kind:"health"},
+    {label:"Mexico City plate bans – pollution", value:0, kind:"air", note:"no improvement"}
+  ]
+};
+
+function bars(el, rows, max, colorFn, ticks){
+  const W=760, rowH=34, left=250, right=60, top=8, axisH=26;
+  const H=top+rows.length*rowH+axisH, w=W-left-right;
+  const x=v=>left+(v/max)*w;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img">`;
+  ticks.forEach(t=>{
+    s+=`<line class="grid" x1="${x(t)}" x2="${x(t)}" y1="${top}" y2="${H-axisH+4}"/>`;
+    s+=`<text class="axis" x="${x(t)}" y="${H-6}" text-anchor="middle">${t}%</text>`;
+  });
+  rows.forEach((r,i)=>{
+    const y=top+i*rowH;
+    s+=`<text x="${left-10}" y="${y+rowH/2+4}" text-anchor="end" font-size="13">${r.label}</text>`;
+    s+=`<rect x="${left}" y="${y+7}" width="${Math.max(x(r.value)-left,2)}" height="${rowH-14}" rx="3" fill="${colorFn(r)}"/>`;
+    s+=`<text x="${x(r.value)+6}" y="${y+rowH/2+4}" font-size="13" font-weight="700">${r.note?r.note:(r.value+'%')}</text>`;
+  });
+  el.innerHTML=s+`</svg>`;
+}
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function draw(){
+  const t100=[0,25,50,75,100];
+  bars(document.getElementById('c1'),DATA.vehicleShare,100,()=>css('--accent'),t100);
+  bars(document.getElementById('c2'),DATA.deathsBySource,100,()=>css('--accent'),t100);
+  bars(document.getElementById('c3'),DATA.disparity.map(d=>({...d,label:(d.group==='ne'?'NE · ':'CA · ')+d.label})),100,d=>d.group==='ne'?css('--accent'):css('--grey'),t100);
+  bars(document.getElementById('c4'),DATA.policies,60,d=>d.kind==='health'?css('--good'):css('--accent'),[0,15,30,45,60]);
+}
+draw();
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',draw);
+</script>
+</body>
+</html>
